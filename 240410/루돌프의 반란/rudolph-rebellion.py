@@ -220,7 +220,7 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
         if S[i][3] == -1:
             continue
         elif S[i][3] == 0: # state가 0이면 sante move
-            dist=[]
+            dist=[(R[0]-S[i][1]+1)**2 + (R[1]-S[i][2]+1)**2]
             direction=[0, 0]
             for di, dj in ((-1,0),(0,1),(1,0),(0,-1)): # 좌 하 우 상 순서로 세팅 후 for 문으로
                 if S[i][1]+di>N or S[i][1]+di<=0 or S[i][2]+dj>N or S[i][2]+dj<=0:
@@ -230,7 +230,7 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
                 if arr[mov_c-1][mov_r-1] == 1:
                     continue
                 dist_i = (R[0]-S[i][1]-di+1)**2 + (R[1]-S[i][2]-dj+1)**2
-                if len(dist)==0 or min(dist)>=dist_i:
+                if min(dist)>=dist_i:
                     dist.append(dist_i)
                     direction = [di, dj] # 마지막 남는 놈
             mov_r = S[i][1]+direction[0]
