@@ -212,11 +212,7 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
                     S[i][2] += back_c 
             return S
         elif arr[b+back_c][a+back_r] == 1: # 밀려나갔는데 또 산타있으면 재귀
-            print('산타 또 있음')
-            move_chain(a+back_r, b+back_c)
-            return S
-        else:
-            return S
+            return move_chain(a+back_r, b+back_c)
 
     # before_S = S.copy() << 틀렸음! # 중요 !!!!!! 리스트는 mutable, 따라서 list를 [:]로 copy 후 할당해야 안변함. 안그러면 포인터처럼 같은 주소를 참조.
     # 더 중요!!!!!!!!! 이 케이스의 경우, S가 list 안에 list가 있기 때문에 이렇게 하면 배열 자체는 다르지만 내부 요소가 똑같음.
