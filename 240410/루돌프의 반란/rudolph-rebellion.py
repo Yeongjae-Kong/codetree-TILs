@@ -70,15 +70,14 @@ def shortest_S(R, S): # 거리가 짧은 index (혹은 index arr) return
     for i in range(len(S)):
         if S[i][3] != -1:
             dist = (R[0] - S[i][1]+1)**2 + (R[1] - S[i][2]+1)**2
-            dist_arr.append(dist)
+            if len(dist_arr) < 1:
+                dist_arr.append(dist)
             if min(dist_arr) > dist:
+                dist_arr.append(dist)
                 index_arr = []
                 index_arr.append(i)
             elif min(dist_arr) == dist:
                 index_arr.append(i)
-    # print("R", R)
-    # print("S", S)
-    # print('shortest_S 결과 ', index_arr)
     return index_arr
 
 def move_R_and_checkCollision(R, S, shortest_index, C):
@@ -100,6 +99,7 @@ def move_R_and_checkCollision(R, S, shortest_index, C):
             return move_chain(a+back_r, b+back_c)
 
     before_R = R[:] # 중요 !!!!!! 리스트는 mutable, 따라서 list를 [:]로 copy 후 할당해야 안변함.
+
     if len(shortest_index) == 1: # 산타가 하나만 있는경우
         i = shortest_index[0]
         if R[0] != S[i][1]-1 and R[1] != S[i][2]-1: # 대각선인 경우
@@ -130,7 +130,9 @@ def move_R_and_checkCollision(R, S, shortest_index, C):
                 arr[S[i][2]-1][S[i][1]-1] = 0
                 S[i][3] = -1
             elif arr[moved_c][moved_r] == 1: # C만큼 날라간 곳에 산타 있으면 연쇄 이동
-                move_chain(moved_r, moved_c)
+                S = move_chain(moved_r, moved_c)
+                S[i][1] += back_r*C
+                S[i][2] += back_c*C
             else:
                 S[i][1] += back_r*C
                 S[i][2] += back_c*C
@@ -142,12 +144,15 @@ def move_R_and_checkCollision(R, S, shortest_index, C):
             if max(r_arr) < S[idx][2]:
                 idx_arr = []
                 idx_arr.append(idx)
-            elif S[idx][1] == max(r_arr):
+                r_arr.append(S[idx][2])
+            elif S[idx][2] == max(r_arr):
                 idx_arr.append(idx)
-            r_arr.append(S[idx][2])
         if len(idx_arr) > 1:
             ans=[]
-            ans.append(max(idx_arr))
+            if S[idx_arr[0]][1] < S[idx_arr[1]][1]:
+                ans.append(idx_arr[1])
+            else:
+                ans.append(idx_arr[0])
             idx_arr = ans
         if len(idx_arr) == 1:
             # 기존 알고리즘
@@ -173,23 +178,24 @@ def move_R_and_checkCollision(R, S, shortest_index, C):
                     R[0] = R[0]-1
             if R[0] == S[i][1]-1 and R[1] == S[i][2]-1: # 충돌 발생
                 S[i][4] += C
-                S[i][3] = 1
+                S[i][3] = 2
                 back_r, back_c = (R[0]-before_R[0]), (R[1]-before_R[1]) # 루돌프가 온 방향
                 moved_r, moved_c = S[i][1]-1 + back_r*C, S[i][2]-1 + back_c*C # *C
                 if moved_r > N-1 or moved_r < 0 or moved_c > N-1 or moved_c < 0: # out of range 발생
                     arr[S[i][2]-1][S[i][1]-1] = 0
                     S[i][3] = -1
                 elif arr[moved_c][moved_r] == 1: # C만큼 날라간 곳에 산타 있으면 연쇄 이동
-                    move_chain(moved_r, moved_c)
+                    S = move_chain(moved_r, moved_c)
+                    S[i][1] += back_r*C
+                    S[i][2] += back_c*C
                 else:
                     S[i][1] += back_r*C
                     S[i][2] += back_c*C
     arr[before_R[1]][before_R[0]] = 0
-    arr[R[1]][R[0]] = 2
     for i in range(P):
         if S[i][3] != -1:
             arr[S[i][2]-1][S[i][1]-1] = 1
-
+    arr[R[1]][R[0]] = 2
     return R, S, arr
 
 def move_S_and_checkCollision(R, S, shortest_index, D):
@@ -259,10 +265,11 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
                 S[i][1] += back_r*D
                 S[i][2] += back_c*D
         arr[before_S[i][2]-1][before_S[i][1]-1] = 0
-        arr[R[1]][R[0]]=2
         for i in range(P):
             if S[i][3] != -1:
                 arr[S[i][2]-1][S[i][1]-1] = 1
+        arr[R[1]][R[0]]=2
+
     # print('R', R)
     # print('after move S, arr ', arr)
     # print('S ', S)
@@ -276,16 +283,11 @@ short_s = shortest_S(R, S) # [0, 1, 2]
 for i in range(M):
     R, S, arr = move_R_and_checkCollision(R, S, short_s, C)
     short_s = shortest_S(R, S)
-    # if i>0:
-    #     print('after move R', arr)
     R, S, arr = move_S_and_checkCollision(R, S, short_s, D)
     short_s = shortest_S(R, S)
     for j in range(P):
         if S[j][3] != -1: # 탈락하지 않은 산타 1점 추가
             S[j][4] += 1
-    # if i>0:
-    #     print('after move R-S', arr)
-    # print("R-S result ", i)
     
 for j in range(P):
     print(S[j][4], end=' ')
