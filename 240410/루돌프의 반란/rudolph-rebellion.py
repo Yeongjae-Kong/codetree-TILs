@@ -38,7 +38,7 @@ for i in range(P):
     p_arr.append(tmp)
     
 # [[1,1,3,0,0], [2,3,5,0,0], [3,5,1,0,0], [4,4,4,0,0]]
-
+p_arr.sort()
 # 이거 산타 위치 계산할 때 써야함
 # p_arr를 loop돌며 arr에 산타 위치=1로 변환
 for i in range(len(p_arr)):
