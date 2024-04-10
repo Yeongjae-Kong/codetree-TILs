@@ -82,25 +82,22 @@ def shortest_S(R, S): # 거리가 짧은 index (혹은 index arr) return
     return index_arr
 
 def move_R_and_checkCollision(R, S, shortest_index, C):
-    def move_chain(a,b): # a,b = moved_c, moved_r (3, 3)
+    def move_chain(a,b): # a,b = moved_c, moved_r (3, 3) / back_r, back_c = (1, 0)
         if a+back_r<0 and a+back_r>N-1 and b+back_c<0 and b+back_c>N-1: # 밀려나간게 게임판 밖이면
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈을 찾아서
                     S[i][1] += back_r
                     S[i][2] += back_c # 날아간 거리만큼 좌표를 더해주고
                     S[i][3] = -1 # 죽었다고 표시
-            return
+            return S
         elif arr[b+back_c][a+back_r] != 1: # 밀려나간게 게임판 안이고 산타가 없으면 해당 위치로 산타 옮김
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈 찾음
                     S[i][1] += back_r
                     S[i][2] += back_c 
-            return
+            return S
         elif arr[b+back_c][a+back_r] == 1: # 밀려나갔는데 또 산타있으면 재귀
-            move_chain(a+back_r, b+back_c)
-            return
-        else:
-            return
+            return move_chain(a+back_r, b+back_c)
 
     before_R = R[:] # 중요 !!!!!! 리스트는 mutable, 따라서 list를 [:]로 copy 후 할당해야 안변함.
     if len(shortest_index) == 1: # 산타가 하나만 있는경우
