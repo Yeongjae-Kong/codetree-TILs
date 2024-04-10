@@ -82,7 +82,7 @@ def shortest_S(R, S): # 거리가 짧은 index (혹은 index arr) return
 
 def move_R_and_checkCollision(R, S, shortest_index, C):
     def move_chain(a,b): # a,b = moved_c, moved_r (3, 3) / back_r, back_c = (1, 0)
-        if a+back_r<0 and a+back_r>N-1 and b+back_c<0 and b+back_c>N-1: # 밀려나간게 게임판 밖이면
+        if a+back_r<0 or a+back_r>N-1 or b+back_c<0 or b+back_c>N-1: # 밀려나간게 게임판 밖이면
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈을 찾아서
                     S[i][1] += back_r
@@ -201,7 +201,7 @@ def move_R_and_checkCollision(R, S, shortest_index, C):
 def move_S_and_checkCollision(R, S, shortest_index, D):
     # !!!!!!!!!!!!!!!!!!!! 재귀함수는 return이 있어야 함.
     def move_chain(a,b): # a,b = moved_c, moved_r (3, 3) / back_r, back_c = (1, 0)
-        if a+back_r<0 and a+back_r>N-1 and b+back_c<0 and b+back_c>N-1: # 밀려나간게 게임판 밖이면
+        if a+back_r<0 or a+back_r>N-1 or b+back_c<0 or b+back_c>N-1: # 밀려나간게 게임판 밖이면
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈을 찾아서
                     S[i][1] += back_r
