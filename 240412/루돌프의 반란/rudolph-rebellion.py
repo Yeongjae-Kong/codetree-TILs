@@ -220,6 +220,7 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
             return S
         elif arr[b+back_c][a+back_r] == 1: # 밀려나갔는데 또 산타있으면 재귀
             print("move S에서 또 재귀 발생")
+            print("arr ", arr)
             move_chain(a+back_r, b+back_c)
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈을 찾아서
