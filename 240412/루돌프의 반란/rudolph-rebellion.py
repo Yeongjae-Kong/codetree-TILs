@@ -266,13 +266,11 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
             S[i][4] += D
             S[i][3] = 1
             back_r, back_c = (before_S[i][1]-S[i][1]), (before_S[i][2]-S[i][2]) # 산타가 온 방향
-            moved_r, moved_c = S[i][1]-1 + (back_r*D), S[i][2]-1 + (back_c*D) # *C
+            moved_r, moved_c = S[i][1]-1 + (back_r*D), S[i][2]-1 + (back_c*D) # *D
             if moved_r > N-1 or moved_r < 0 or moved_c > N-1 or moved_c < 0: # out of range 발생
                 arr[S[i][2]-1][S[i][1]-1] = 0
                 S[i][3] = -1
-            # elif (moved_r==before_S[i][1]-1) and (moved_c==before_S[i][2]-1):
-            #     S=S
-            elif arr[moved_c][moved_r] == 1: # C만큼 날라간 곳에 산타 있으면 연쇄 이동
+            elif arr[moved_c][moved_r] == 1 and ((moved_r!=before_S[i][1]-1) and (moved_c!=before_S[i][2]-1)): # C만큼 날라간 곳에 산타 있으면 연쇄 이동
                 S = move_chain(moved_r, moved_c)
                 S[i][1] += back_r*D
                 S[i][2] += back_c*D
