@@ -210,8 +210,6 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
         if a+back_r<0 or a+back_r>N-1 or b+back_c<0 or b+back_c>N-1: # 밀려나간게 게임판 밖이면
             for i in range(P):
                 if S[i][1]-1 == a and S[i][2]-1 == b: # 기존에 있던 밀려난 놈을 찾아서
-                    S[i][1] += back_r
-                    S[i][2] += back_c # 날아간 거리만큼 좌표를 더해주고
                     S[i][3] = -1 # 죽었다고 표시
             return S
         elif arr[b+back_c][a+back_r] != 1: # 밀려나간게 게임판 안이고 산타가 없으면 해당 위치로 산타 옮김
