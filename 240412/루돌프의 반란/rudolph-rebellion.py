@@ -271,7 +271,7 @@ def move_S_and_checkCollision(R, S, shortest_index, D):
                 arr[S[i][2]-1][S[i][1]-1] = 0
                 S[i][3] = -1
             elif (moved_r==before_S[i][1]-1) and (moved_c==before_S[i][2]-1):
-                continue
+                S=S
             elif arr[moved_c][moved_r] == 1: # C만큼 날라간 곳에 산타 있으면 연쇄 이동
                 S = move_chain(moved_r, moved_c)
                 S[i][1] += back_r*D
